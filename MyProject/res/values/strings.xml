@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="app_name">FlipLayout</string>
+    <string name="front">Front</string>
+    <string name="back">Back</string>
+     <!-- SD卡检测 -->
+    <string name="download_no_sdcard_dlg_msg">您的设备没有安装 SD 卡！</string>
+    <string name="download_sdcard_busy_dlg_msg">您的SD卡正在用于其他用途，请关闭 USB存储设备</string>
+
+    <!-- 网络连接错误提示 -->
+    <string name="http_error_nonetwork">没有网络连接"</string>
+    <string name="http_error_unknowhost">您的网络出现故障，无法解析域名</string>
+    <string name="http_error_bad_network">您的网速太不给力了</string>
+    <string name="http_error_server_error">服务器端发生异常,请稍后重试</string>
+    <string name="http_error_error_netowrk">无法连接到服务器</string>
+    <string name="http_error_error_bad_url">无法连接到网址</string>
+    <string name="http_error_unknown">未知错误</string>
+
+</resources>
