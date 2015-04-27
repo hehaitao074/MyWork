@@ -8,6 +8,7 @@ import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 
+
 /**
  * Shimmer
  * User: romainpiel

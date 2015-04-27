@@ -6,6 +6,7 @@ package com.storm.fliplayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -101,7 +102,7 @@ public class MainActivity extends Activity {
 	private void initDragLayout() {
 		dragLayout.setDragListener(new DragListener() {
 			public void onOpen() {
-				// mDrawerList.smoothScrollToPosition(new Random().nextInt(30));
+				mDrawerList.smoothScrollToPosition(new Random().nextInt(30));
 			}
 
 			public void onClose() {
