@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import com.baidu.frontia.FrontiaApplication;
+import com.facebook.stetho.Stetho;
 
 public class MyApplication extends FrontiaApplication {
 
@@ -24,6 +25,15 @@ public class MyApplication extends FrontiaApplication {
 		// 全局异常捕捉
 		// CrashHandler crashHandler = CrashHandler.getInstance();
 		// crashHandler.init(getApplicationContext());
+		
+		//facebook调试android工具类
+		Stetho.initialize(
+			    Stetho.newInitializerBuilder(this)
+			        .enableDumpapp(
+			                Stetho.defaultDumperPluginsProvider(this))
+			        .enableWebKitInspector(
+			                Stetho.defaultInspectorModulesProvider(this))
+			        .build());
 
 	}
 
