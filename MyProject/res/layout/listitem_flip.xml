@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <ImageView
+        <com.loopj.android.image.SmartImageView
             android:id="@+id/img_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -17,12 +17,13 @@
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
         android:background="#FF999999"
         android:gravity="center"
         android:text="@string/back"
+        android:padding="5dp"
         android:textAppearance="@android:style/TextAppearance.Large"
         android:visibility="gone" />
 

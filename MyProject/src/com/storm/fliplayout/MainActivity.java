@@ -1,7 +1,6 @@
-/*
- * Created by Storm Zhang, Apr 1, 2014.
+/**
+ * hehaitao
  */
-
 package com.storm.fliplayout;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +31,7 @@ import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.loopj.android.image.SmartImageView;
 import com.nineoldandroids.view.ViewHelper;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
@@ -48,7 +49,7 @@ import com.storm.fliplayout.effect.SearchListView;
 import com.storm.fliplayout.helper.HttpHelper;
 import com.storm.fliplayout.helper.ToastUtils;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppBaseActivity {
 	@ViewInject(R.id.left_drawer)
 	ListView mDrawerList;
 	@ViewInject(R.id.dl)
@@ -67,6 +68,7 @@ public class MainActivity extends Activity {
 	private List<String> titleData;
 	private List<String> hrefData;
 	private CommonAdapter<PicWen> commonAdapter;
+	private int page = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,7 +93,7 @@ public class MainActivity extends Activity {
 						.centerCrop()
 						.placeholder(R.drawable.default_image_square)
 						.crossFade()
-						.into((ImageView) helper.getView(R.id.img_item));
+						.into((SmartImageView) helper.getView(R.id.img_item));
 
 			}
 
@@ -100,6 +102,12 @@ public class MainActivity extends Activity {
 	}
 
 	private void initDragLayout() {
+		List<String> list = new ArrayList<String>();
+		list.add("美女美句");
+		list.add("靓男靓女");
+		list.add("文艺范");
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, list));
 		dragLayout.setDragListener(new DragListener() {
 			public void onOpen() {
 				mDrawerList.smoothScrollToPosition(new Random().nextInt(30));
@@ -143,8 +151,11 @@ public class MainActivity extends Activity {
 			@Override
 			public void onRefresh(boolean isTop) {
 				if (isTop) {
+					page = 0;
 					loadFirstPageData();
 				} else {
+					page++;
+					loadMorePageData();
 
 				}
 			}
@@ -158,23 +169,71 @@ public class MainActivity extends Activity {
 
 		mListView.state = SearchListView.REFRESHING;
 		mListView.changeHeaderViewByState();
-		RequestParams params = HttpHelper.getRequestParams(this);
-		http.configTimeout(5000);
+		// RequestParams params = HttpHelper.getRequestParams(this);参数设置
+		http.configTimeout(5000);// 设置超时时间
 		http.configDefaultHttpCacheExpiry(0);// 配置默认的HTTP缓存到期
 		http.send(HttpRequest.HttpMethod.GET, CommunityUrl.url,
 				new RequestCallBack<String>() {
 
 					@Override
 					public void onFailure(HttpException arg0, String arg1) {
-						ToastUtils.showShortToast(MainActivity.this,arg1);
+						ToastUtils.showShortToast(MainActivity.this, arg1);
 						mListView.onRefreshComplete();
 					}
 
 					@Override
 					public void onSuccess(ResponseInfo<String> response) {
-						Log.i("hht","=="+response.result);
+						// Log.i("hht","=="+response.result);
 						mDocument = Jsoup.parse(response.result);
-						
+
+						titleData = new ArrayList<String>();
+						Elements es = mDocument.getElementsByClass("xlistju");
+						for (Element e : es) {
+							titleData.add(e.text());
+						}
+
+						hrefData = new ArrayList<String>();
+						Elements es1 = mDocument
+								.getElementsByClass("chromeimg");
+						for (Element e : es1) {
+							hrefData.add(e.attr("src"));
+						}
+						picWens.clear();
+						for (int i = 0; i < hrefData.size(); i++) {
+							PicWen picWen = new PicWen();
+							picWen.setTitle(titleData.get(i));
+							picWen.setImgUrl(hrefData.get(i));
+							picWens.add(picWen);
+						}
+						mListView.onRefreshComplete();
+						commonAdapter.notifyDataSetChanged();
+
+					}
+				});
+	}
+
+	// 加载更多数据
+	private void loadMorePageData() {
+
+		mListView.state = SearchListView.REFRESHING;
+		mListView.changeHeaderViewByState();
+		// RequestParams params = HttpHelper.getRequestParams(this);参数设置
+		http.configTimeout(5000);// 设置超时时间
+		http.configDefaultHttpCacheExpiry(0);// 配置默认的HTTP缓存到期
+		http.send(HttpRequest.HttpMethod.GET, CommunityUrl.url + page,
+				new RequestCallBack<String>() {
+
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {
+						ToastUtils.showShortToast(MainActivity.this, arg1);
+						mListView.onRefreshComplete();
+					}
+
+					@Override
+					public void onSuccess(ResponseInfo<String> response) {
+
+						mDocument = Jsoup.parse(response.result);
+
 						titleData = new ArrayList<String>();
 						Elements es = mDocument.getElementsByClass("xlistju");
 						for (Element e : es) {
