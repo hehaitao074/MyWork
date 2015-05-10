@@ -3,6 +3,8 @@ package com.storm.fliplayout.appliancation;
 import java.util.Iterator;
 import java.util.List;
 
+import org.litepal.LitePalApplication;
+
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -10,7 +12,7 @@ import android.content.pm.PackageManager;
 import com.baidu.frontia.FrontiaApplication;
 import com.facebook.stetho.Stetho;
 
-public class MyApplication extends FrontiaApplication {
+public class MyApplication extends LitePalApplication {
 
 	public static Context applicationContext;
 	private static MyApplication instance;
