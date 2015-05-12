@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -15,18 +16,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.Shader.TileMode;
-import android.graphics.drawable.Drawable;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader.TileMode;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
@@ -37,15 +38,31 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
+
 /**
  * 
- * @author heht
- * 图片和bitmap工具类
- *
+ * @author heht 图片和bitmap工具类
+ * 
  */
 public class PicUtils {
 
 	public static final String TAG = "PicUtils";
+
+	/**
+	 * 通过资源id转化成Bitmap
+	 * 
+	 * @param context
+	 * @param resId
+	 * @return
+	 */
+	public static Bitmap readBitmapById(Context context, int resId) {
+		BitmapFactory.Options opt = new BitmapFactory.Options();
+		opt.inPreferredConfig = Bitmap.Config.RGB_565;
+		opt.inPurgeable = true;
+		opt.inInputShareable = true;
+		InputStream is = context.getResources().openRawResource(resId);
+		return BitmapFactory.decodeStream(is, null, opt);
+	}
 
 	/**
 	 * 计算图片的缩放值
@@ -397,17 +414,34 @@ public class PicUtils {
 		return bitmap;
 	}
 
-	// 放大缩小图片
-	public static Bitmap zoomBitmap(Bitmap bitmap, int w, int h) {
-		int width = bitmap.getWidth();
-		int height = bitmap.getHeight();
+	/**
+	 * 缩放图片
+	 * 
+	 * @param bm
+	 *            要缩放图片
+	 * @param newWidth
+	 *            宽度
+	 * @param newHeight
+	 *            高度
+	 * @return处理后的图片
+	 */
+	public static Bitmap scaleImage(Bitmap bm, int newWidth, int newHeight) {
+		if (bm == null) {
+			return null;
+		}
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		float scaleWidth = ((float) newWidth) / width;
+		float scaleHeight = ((float) newHeight) / height;
 		Matrix matrix = new Matrix();
-		float scaleWidht = ((float) w / width);
-		float scaleHeight = ((float) h / height);
-		matrix.postScale(scaleWidht, scaleHeight);
-		Bitmap newbmp = Bitmap.createBitmap(bitmap, 0, 0, width, height,
-				matrix, true);
-		return newbmp;
+		matrix.postScale(scaleWidth, scaleHeight);
+		Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix,
+				true);
+		if (bm != null & !bm.isRecycled()) {
+			bm.recycle();// 销毁原图片
+			bm = null;
+		}
+		return newbm;
 	}
 
 	// 将Drawable转化为Bitmap
@@ -481,6 +515,88 @@ public class PicUtils {
 				+ reflectionGap, paint);
 
 		return bitmapWithReflection;
+	}
+
+	/**
+	 * 
+	 * @param bitmap
+	 * @return 返回圆形图片
+	 */
+	public static Bitmap toRoundBitmap(Bitmap bitmap) {
+		if (bitmap == null) {
+			return null;
+		}
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		float roundPx;
+		float left, top, right, bottom, dst_left, dst_top, dst_right, dst_bottom;
+		if (width <= height) {
+			roundPx = width / 2;
+			top = 0;
+			bottom = width;
+			left = 0;
+			right = width;
+			height = width;
+			dst_left = 0;
+			dst_top = 0;
+			dst_right = width;
+			dst_bottom = width;
+		} else {
+			roundPx = height / 2;
+			float clip = (width - height) / 2;
+			left = clip;
+			right = width - clip;
+			top = 0;
+			bottom = height;
+			width = height;
+			dst_left = 0;
+			dst_top = 0;
+			dst_right = height;
+			dst_bottom = height;
+		}
+		Bitmap output = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+		Canvas canvas = new Canvas(output);
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		final Rect src = new Rect((int) left, (int) top, (int) right,
+				(int) bottom);
+		final Rect dst = new Rect((int) dst_left, (int) dst_top,
+				(int) dst_right, (int) dst_bottom);
+		final RectF rectF = new RectF(dst);
+		paint.setAntiAlias(true);
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, src, dst, paint);
+		if (bitmap != null && !bitmap.isRecycled()) {
+			bitmap.recycle();
+			bitmap = null;
+		}
+		return output;
+	}
+
+	/**
+	 * 旋转图片
+	 * 
+	 * @param angle
+	 *            旋转角度
+	 * @param bitmap
+	 *            要处理的Bitmap
+	 * @return 处理后的Bitmap
+	 */
+	public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
+		// 旋转图片 动作
+		Matrix matrix = new Matrix();
+		matrix.postRotate(angle);
+		// 创建新的图片
+		Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
+				bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+		if (resizedBitmap != bitmap && bitmap != null && !bitmap.isRecycled()) {
+			bitmap.recycle();
+			bitmap = null;
+		}
+		return resizedBitmap;
 	}
 
 }
