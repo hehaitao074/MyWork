@@ -167,7 +167,7 @@ public class MainActivity extends AppBaseActivity {
 	// 第一次加载数据
 	private void loadFirstPageData() {
 
-		mListView.state = SearchListView.REFRESHING;
+		mListView.state = PullListView.REFRESHING;
 		mListView.changeHeaderViewByState();
 		// RequestParams params = HttpHelper.getRequestParams(this);参数设置
 		http.configTimeout(5000);// 设置超时时间
@@ -187,7 +187,7 @@ public class MainActivity extends AppBaseActivity {
 						mDocument = Jsoup.parse(response.result);
 
 						titleData = new ArrayList<String>();
-						Elements es = mDocument.getElementsByClass("xlistju");
+						Elements es = mDocument.getElementsByClass("xlistju");						
 						for (Element e : es) {
 							titleData.add(e.text());
 						}
@@ -215,7 +215,7 @@ public class MainActivity extends AppBaseActivity {
 	// 加载更多数据
 	private void loadMorePageData() {
 
-		mListView.state = SearchListView.REFRESHING;
+		mListView.state = PullListView.REFRESHING;
 		mListView.changeHeaderViewByState();
 		// RequestParams params = HttpHelper.getRequestParams(this);参数设置
 		http.configTimeout(5000);// 设置超时时间
