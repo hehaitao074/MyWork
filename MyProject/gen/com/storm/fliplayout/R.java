@@ -1404,25 +1404,26 @@ containing a value of this type.
         public static final int listview_header_search=0x7f030005;
     }
     public static final class string {
-        public static final int action_settings=0x7f06000d;
+        public static final int API_KEY_PUSH=0x7f060003;
+        public static final int action_settings=0x7f06000e;
         public static final int app_name=0x7f060000;
         public static final int back=0x7f060002;
         /**  SD卡检测 
          */
-        public static final int download_no_sdcard_dlg_msg=0x7f060003;
-        public static final int download_sdcard_busy_dlg_msg=0x7f060004;
+        public static final int download_no_sdcard_dlg_msg=0x7f060004;
+        public static final int download_sdcard_busy_dlg_msg=0x7f060005;
         public static final int front=0x7f060001;
-        public static final int hello_world=0x7f06000e;
-        public static final int http_error_bad_network=0x7f060007;
-        public static final int http_error_error_bad_url=0x7f06000a;
-        public static final int http_error_error_netowrk=0x7f060009;
+        public static final int hello_world=0x7f06000f;
+        public static final int http_error_bad_network=0x7f060008;
+        public static final int http_error_error_bad_url=0x7f06000b;
+        public static final int http_error_error_netowrk=0x7f06000a;
         /**  网络连接错误提示 
          */
-        public static final int http_error_nonetwork=0x7f060005;
-        public static final int http_error_server_error=0x7f060008;
-        public static final int http_error_unknowhost=0x7f060006;
-        public static final int http_error_unknown=0x7f06000b;
-        public static final int title_activity_app_base=0x7f06000c;
+        public static final int http_error_nonetwork=0x7f060006;
+        public static final int http_error_server_error=0x7f060009;
+        public static final int http_error_unknowhost=0x7f060007;
+        public static final int http_error_unknown=0x7f06000c;
+        public static final int title_activity_app_base=0x7f06000d;
     }
     public static final class style {
         /** 

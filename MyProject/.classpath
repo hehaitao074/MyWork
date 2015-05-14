@@ -14,12 +14,12 @@
 	<classpathentry kind="lib" path="libs/universal-image-loader-1.9.3-with-sources.jar"/>
 	<classpathentry kind="lib" path="libs/nineoldandroids-2.4.0.jar"/>
 	<classpathentry kind="lib" path="libs/baidumapapi_v3_2_0.jar"/>
-	<classpathentry kind="lib" path="libs/pushservice-4.4.0.71.jar"/>
 	<classpathentry kind="lib" path="libs/testinagent-v1.4.jar"/>
 	<classpathentry kind="lib" path="libs/xutils.jar"/>
 	<classpathentry kind="lib" path="libs/fastjson-1.1.33.jar"/>
 	<classpathentry kind="lib" path="libs/stetho-1.1.1-fatjar.jar"/>
 	<classpathentry kind="lib" path="libs/android-smart-image-view-1.0.0.jar"/>
 	<classpathentry kind="lib" path="libs/litepal-1.1.1-src.jar"/>
+	<classpathentry kind="lib" path="libs/pushservice-4.4.1.88.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

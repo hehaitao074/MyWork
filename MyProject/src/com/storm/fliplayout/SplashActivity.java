@@ -1,23 +1,17 @@
 package com.storm.fliplayout;
 
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.loopj.android.image.SmartImageView;
-
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.app.Activity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
+
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
+import com.loopj.android.image.SmartImageView;
+import com.storm.fliplayout.helper.Utils;
 
 public class SplashActivity extends AppBaseActivity {
 
@@ -48,6 +42,11 @@ public class SplashActivity extends AppBaseActivity {
 		setContentView(R.layout.activity_splash);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		ViewUtils.inject(this);
+		// 初始化百度推送
+		if (!Utils.hasBind(this)) {
+			Utils.initWithApiKey(this);
+
+		}
 		smartImageView.startAnimation(AnimationUtils.loadAnimation(this,
 				R.anim.alpha));
 		handler.postDelayed(new Runnable() {

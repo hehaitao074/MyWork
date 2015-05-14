@@ -7,7 +7,7 @@ import android.os.Environment;
 public class Constant {
 
 	// 是否在调试模式
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = true;	
 	// 图片存储路径
 	public static final String SAVED_IMAGE_DIR_PATH = Environment
 			.getExternalStorageDirectory()

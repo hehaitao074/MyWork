@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baidu.android.pushservice.PushManager;
 import com.bumptech.glide.Glide;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.ViewUtils;
@@ -48,6 +49,7 @@ import com.storm.fliplayout.effect.PullListView.OnRefreshListener;
 import com.storm.fliplayout.effect.SearchListView;
 import com.storm.fliplayout.helper.HttpHelper;
 import com.storm.fliplayout.helper.ToastUtils;
+import com.storm.fliplayout.helper.Utils;
 
 public class MainActivity extends AppBaseActivity {
 	@ViewInject(R.id.left_drawer)
@@ -79,7 +81,7 @@ public class MainActivity extends AppBaseActivity {
 		initView();
 	}
 
-	private void init() {
+	private void init() {		
 		http = new HttpUtils();
 		picWens = new ArrayList<PicWen>();
 		commonAdapter = new CommonAdapter<PicWen>(this, picWens,
